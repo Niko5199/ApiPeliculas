@@ -35,7 +35,9 @@ namespace ApiPeliculas.Repositorio
 
         public bool ExisteCategoria(string Nombre)
         {
-            bool valor = __bd.Categoria.Any(c => c.Nombre.ToLower().Trim() == Nombre.ToLower().Trim());
+            bool valor = __bd.Categoria.Any(
+                c => c.Nombre.ToLower().Trim() == Nombre.ToLower().Trim()
+            );
             return valor;
         }
 
