@@ -1,4 +1,4 @@
-﻿using ApiPeliculas.Data;
+﻿    using ApiPeliculas.Data;
 using ApiPeliculas.Modelos;
 using ApiPeliculas.Repositorio.IRepositorio;
 
@@ -35,10 +35,10 @@ namespace ApiPeliculas.Repositorio
 
         public bool ExisteCategoria(string Nombre)
         {
-            bool valor = __bd.Categoria.Any(
+            return __bd.Categoria.Any(
                 c => c.Nombre.ToLower().Trim() == Nombre.ToLower().Trim()
             );
-            return valor;
+        
         }
 
         public bool ExisteCategoria(int id)
