@@ -1,12 +1,19 @@
 ﻿using ApiPeliculas.Data;
 using ApiPeliculas.Modelos;
 using ApiPeliculas.Repositorio.IRepositorio;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiPeliculas.Repositorio
 {
     public class PeliculaRepositorio : IPeliculaRepositorio
     {
         private readonly ApplicationDbContext __bd;
+
+        public PeliculaRepositorio(ApplicationDbContext bd)
+        {
+            __bd = bd;
+        }
+
         public bool ActualizarPelicula(Pelicula pelicula)
         {
             pelicula.FechaCreacion = DateTime.Now;
@@ -18,6 +25,16 @@ namespace ApiPeliculas.Repositorio
         {
             __bd.Pelicula.Remove(pelicula);
             return Guardar();
+        }
+
+        public ICollection<Pelicula> BuscarPeliculaNombre(string nombre)
+        {
+            IQueryable<Pelicula> query = __bd.Pelicula;
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                query = query.Where(e => e.Nombre.Contains(nombre) || e.Descripcion.Contains(nombre));
+            }
+            return query.ToList();
         }
 
         public bool CrearPelicula(Pelicula pelicula)
@@ -45,6 +62,11 @@ namespace ApiPeliculas.Repositorio
         public ICollection<Pelicula> GetPeliculas()
         {
             return __bd.Pelicula.OrderBy(p => p.Nombre).ToList();
+        }
+
+        public ICollection<Pelicula> GetPeliculasCategoria(int peliculaId)
+        {
+            return __bd.Pelicula.Include(ca => ca.Categoria).Where(ca => ca.CategoriaId==peliculaId).ToList();
         }
 
         public bool Guardar()
