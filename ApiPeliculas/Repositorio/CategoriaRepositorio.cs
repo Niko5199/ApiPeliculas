@@ -48,7 +48,7 @@ namespace ApiPeliculas.Repositorio
 
         public Categoria GetCategoria(int categorId)
         {
-            return __bd.Categoria.First(c => c.Id == categorId);
+            return __bd.Categoria.FirstOrDefault(c => c.Id == categorId);
         }
 
         public ICollection<Categoria> GetCategorias()
